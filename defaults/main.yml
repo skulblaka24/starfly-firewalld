@@ -1,0 +1,14 @@
+---
+# defaults file for firewall
+
+# firewall_port_tcp:
+#   - 3000
+#   - 80
+#   - 443
+#   - 8080
+
+# firewall_port_udp:
+#   - 3000
+#   - 80
+#   - 443
+#   - 8080

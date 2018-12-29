@@ -1,0 +1,42 @@
+---
+- name: Démarrage et enable du service firewalld
+  service:
+    name: firewalld
+    state: started
+    enabled: yes
+
+- name: Réglages du firewalld en tcp
+  shell: firewall-cmd --permanent --add-port="{{ item }}/tcp"
+  with_items: '{{ firewall_port_tcp }}'
+  when: ansible_distribution == 'Debian'
+
+- name: Réglages du firewalld en udp
+  shell: firewall-cmd --permanent --add-port="{{ item }}/udp"
+  with_items: '{{ firewall_port_udp }}'
+  when: ansible_distribution == 'Debian'
+
+- name: Reload du firewall
+  shell: firewall-cmd --reload
+  when: ansible_distribution == 'Debian'
+
+- name: Redhat - Réglages du firewalld en tcp
+  firewalld:
+    port: '{{ item }}/tcp'
+    state: enabled 
+    zone: public 
+    permanent: yes 
+    immediate: true
+  with_items: '{{ firewall_port_tcp }}'
+  when: ansible_distribution == 'Redhat'
+
+- name: Redhat - Réglages du firewalld en udp
+  firewalld:
+    port: '{{ item }}/udp'
+    state: enabled 
+    zone: public 
+    permanent: yes 
+    immediate: true
+  with_items: '{{ firewall_port_udp }}'
+  when: ansible_distribution == 'Redhat'
+
+...
